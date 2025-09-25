@@ -1,0 +1,1142 @@
+{
+  "settings": {
+    "languages": [
+      "zh",
+      "en"
+    ],
+    "tag": "nlp",
+    "threshold": 0.5,
+    "autoLoad": true,
+    "autoSave": true,
+    "modelFileName": "model.nlp",
+    "executeActionsBeforeAnswers": false,
+    "calculateSentiment": true
+  },
+  "nluManager": {
+    "settings": {
+      "tag": "nlu-manager"
+    },
+    "locales": [
+      "zh",
+      "en"
+    ],
+    "languageNames": {},
+    "domainManagers": {
+      "zh": {
+        "settings": {
+          "locale": "zh",
+          "trainByDomain": false,
+          "tag": "domain-manager-zh",
+          "nluByDomain": {
+            "default": {
+              "className": "NeuralNlu",
+              "settings": {}
+            }
+          },
+          "useStemDict": true
+        },
+        "stemDict": {
+          "bao4,biao3,cai2,fen1,he2,ru2,wu4,xi1": {
+            "intent": "financial.analysis",
+            "domain": "default"
+          },
+          "bao4,biao3,cai2,kan1,kan4,me5,wu4,zen3": {
+            "intent": "financial.analysis",
+            "domain": "default"
+          },
+          "biao3,jin1,liang4,liu2,me5,shen2,shi4,xian4": {
+            "intent": "cashflow.explanation",
+            "domain": "default"
+          },
+          "biao3,jie3,li4,run4,shi4,xia4,yi1": {
+            "intent": "income.statement",
+            "domain": "default"
+          },
+          "bao4,xiao1": {
+            "intent": "reimbursement.definition",
+            "domain": "default"
+          },
+          "bao4,me5,shen2,shi4,xiao1": {
+            "intent": "reimbursement.definition",
+            "domain": "default"
+          },
+          "bao4,cheng2,liu2,xiao1": {
+            "intent": "reimbursement.process",
+            "domain": "default"
+          },
+          "bao4,me5,xiao1,zen3": {
+            "intent": "reimbursement.process",
+            "domain": "default"
+          },
+          "bao4,he2,ru2,xiao1": {
+            "intent": "reimbursement.process",
+            "domain": "default"
+          },
+          "bao4,ben3,cheng2,ji1,liu2,xiao1": {
+            "intent": "reimbursement.process",
+            "domain": "default"
+          },
+          "hao3,ni3": {
+            "intent": "greeting",
+            "domain": "default"
+          },
+          "hao3,nin2": {
+            "intent": "greeting",
+            "domain": "default"
+          },
+          "hai1": {
+            "intent": "greeting",
+            "domain": "default"
+          }
+        },
+        "intentDict": {
+          "financial.analysis": "default",
+          "cashflow.explanation": "default",
+          "income.statement": "default",
+          "reimbursement.definition": "default",
+          "reimbursement.process": "default",
+          "greeting": "default"
+        },
+        "sentences": [
+          {
+            "domain": "default",
+            "utterance": "如何分析财务报表？",
+            "intent": "financial.analysis"
+          },
+          {
+            "domain": "default",
+            "utterance": "财务报表怎么看？",
+            "intent": "financial.analysis"
+          },
+          {
+            "domain": "default",
+            "utterance": "什么是现金流量表？",
+            "intent": "cashflow.explanation"
+          },
+          {
+            "domain": "default",
+            "utterance": "解释一下利润表",
+            "intent": "income.statement"
+          },
+          {
+            "domain": "default",
+            "utterance": "报销",
+            "intent": "reimbursement.definition"
+          },
+          {
+            "domain": "default",
+            "utterance": "报销是什么？",
+            "intent": "reimbursement.definition"
+          },
+          {
+            "domain": "default",
+            "utterance": "报销是什么",
+            "intent": "reimbursement.definition"
+          },
+          {
+            "domain": "default",
+            "utterance": "报销流程",
+            "intent": "reimbursement.process"
+          },
+          {
+            "domain": "default",
+            "utterance": "怎么报销？",
+            "intent": "reimbursement.process"
+          },
+          {
+            "domain": "default",
+            "utterance": "怎么报销",
+            "intent": "reimbursement.process"
+          },
+          {
+            "domain": "default",
+            "utterance": "如何报销？",
+            "intent": "reimbursement.process"
+          },
+          {
+            "domain": "default",
+            "utterance": "如何报销",
+            "intent": "reimbursement.process"
+          },
+          {
+            "domain": "default",
+            "utterance": "报销的基本流程",
+            "intent": "reimbursement.process"
+          },
+          {
+            "domain": "default",
+            "utterance": "你好",
+            "intent": "greeting"
+          },
+          {
+            "domain": "default",
+            "utterance": "您好",
+            "intent": "greeting"
+          },
+          {
+            "domain": "default",
+            "utterance": "嗨",
+            "intent": "greeting"
+          }
+        ],
+        "domains": {
+          "master_domain": {
+            "settings": {
+              "locale": "zh",
+              "tag": "nlu-zh",
+              "keepStopwords": true,
+              "nonefeatureValue": 1,
+              "nonedeltaMultiplier": 1.2,
+              "spellCheck": false,
+              "spellCheckDistance": 1,
+              "filterZeros": true,
+              "log": true
+            },
+            "features": {
+              "ru2": 1,
+              "he2": 1,
+              "fen1": 1,
+              "xi1": 1,
+              "cai2": 1,
+              "wu4": 1,
+              "bao4": 1,
+              "biao3": 1,
+              "zen3": 1,
+              "me5": 1,
+              "kan1": 1,
+              "kan4": 1,
+              "shen2": 1,
+              "shi4": 1,
+              "xian4": 1,
+              "jin1": 1,
+              "liu2": 1,
+              "liang4": 1,
+              "jie3": 1,
+              "yi1": 1,
+              "xia4": 1,
+              "li4": 1,
+              "run4": 1,
+              "xiao1": 1,
+              "cheng2": 1,
+              "ji1": 1,
+              "ben3": 1,
+              "ni3": 1,
+              "hao3": 1,
+              "nin2": 1,
+              "hai1": 1
+            },
+            "intents": {
+              "financial.analysis": 1,
+              "cashflow.explanation": 1,
+              "income.statement": 1,
+              "reimbursement.definition": 1,
+              "reimbursement.process": 1,
+              "greeting": 1
+            },
+            "intentFeatures": {
+              "financial.analysis": {
+                "ru2": 1,
+                "he2": 1,
+                "fen1": 1,
+                "xi1": 1,
+                "cai2": 1,
+                "wu4": 1,
+                "bao4": 1,
+                "biao3": 1,
+                "zen3": 1,
+                "me5": 1,
+                "kan1": 1,
+                "kan4": 1
+              },
+              "cashflow.explanation": {
+                "shen2": 1,
+                "me5": 1,
+                "shi4": 1,
+                "xian4": 1,
+                "jin1": 1,
+                "liu2": 1,
+                "liang4": 1,
+                "biao3": 1
+              },
+              "income.statement": {
+                "jie3": 1,
+                "shi4": 1,
+                "yi1": 1,
+                "xia4": 1,
+                "li4": 1,
+                "run4": 1,
+                "biao3": 1
+              },
+              "reimbursement.definition": {
+                "bao4": 1,
+                "xiao1": 1,
+                "shi4": 1,
+                "shen2": 1,
+                "me5": 1
+              },
+              "reimbursement.process": {
+                "bao4": 1,
+                "xiao1": 1,
+                "liu2": 1,
+                "cheng2": 1,
+                "zen3": 1,
+                "me5": 1,
+                "ru2": 1,
+                "he2": 1,
+                "ji1": 1,
+                "ben3": 1
+              },
+              "greeting": {
+                "ni3": 1,
+                "hao3": 1,
+                "nin2": 1,
+                "hai1": 1
+              }
+            },
+            "featuresToIntent": {
+              "ru2": [
+                "financial.analysis",
+                "reimbursement.process"
+              ],
+              "he2": [
+                "financial.analysis",
+                "reimbursement.process"
+              ],
+              "fen1": [
+                "financial.analysis"
+              ],
+              "xi1": [
+                "financial.analysis"
+              ],
+              "cai2": [
+                "financial.analysis"
+              ],
+              "wu4": [
+                "financial.analysis"
+              ],
+              "bao4": [
+                "financial.analysis",
+                "reimbursement.definition",
+                "reimbursement.process"
+              ],
+              "biao3": [
+                "financial.analysis",
+                "cashflow.explanation",
+                "income.statement"
+              ],
+              "zen3": [
+                "financial.analysis",
+                "reimbursement.process"
+              ],
+              "me5": [
+                "financial.analysis",
+                "cashflow.explanation",
+                "reimbursement.definition",
+                "reimbursement.process"
+              ],
+              "kan1": [
+                "financial.analysis"
+              ],
+              "kan4": [
+                "financial.analysis"
+              ],
+              "shen2": [
+                "cashflow.explanation",
+                "reimbursement.definition"
+              ],
+              "shi4": [
+                "cashflow.explanation",
+                "income.statement",
+                "reimbursement.definition"
+              ],
+              "xian4": [
+                "cashflow.explanation"
+              ],
+              "jin1": [
+                "cashflow.explanation"
+              ],
+              "liu2": [
+                "cashflow.explanation",
+                "reimbursement.process"
+              ],
+              "liang4": [
+                "cashflow.explanation"
+              ],
+              "jie3": [
+                "income.statement"
+              ],
+              "yi1": [
+                "income.statement"
+              ],
+              "xia4": [
+                "income.statement"
+              ],
+              "li4": [
+                "income.statement"
+              ],
+              "run4": [
+                "income.statement"
+              ],
+              "xiao1": [
+                "reimbursement.definition",
+                "reimbursement.process"
+              ],
+              "cheng2": [
+                "reimbursement.process"
+              ],
+              "ji1": [
+                "reimbursement.process"
+              ],
+              "ben3": [
+                "reimbursement.process"
+              ],
+              "ni3": [
+                "greeting"
+              ],
+              "hao3": [
+                "greeting"
+              ],
+              "nin2": [
+                "greeting"
+              ],
+              "hai1": [
+                "greeting"
+              ]
+            },
+            "neuralNetwork": {
+              "settings": {
+                "locale": "zh",
+                "tag": "nlu-zh",
+                "keepStopwords": true,
+                "nonefeatureValue": 1,
+                "nonedeltaMultiplier": 1.2,
+                "spellCheck": false,
+                "spellCheckDistance": 1,
+                "filterZeros": true,
+                "log": true
+              },
+              "features": [
+                "ru2",
+                "he2",
+                "fen1",
+                "xi1",
+                "cai2",
+                "wu4",
+                "bao4",
+                "biao3",
+                "zen3",
+                "me5",
+                "kan1",
+                "kan4",
+                "shen2",
+                "shi4",
+                "xian4",
+                "jin1",
+                "liu2",
+                "liang4",
+                "jie3",
+                "yi1",
+                "xia4",
+                "li4",
+                "run4",
+                "xiao1",
+                "cheng2",
+                "ji1",
+                "ben3",
+                "ni3",
+                "hao3",
+                "nin2",
+                "hai1"
+              ],
+              "intents": [
+                "financial.analysis",
+                "cashflow.explanation",
+                "income.statement",
+                "reimbursement.definition",
+                "reimbursement.process",
+                "greeting"
+              ],
+              "perceptrons": [
+                [
+                  0.7637814283370972,
+                  0.7637814283370972,
+                  1.4613888263702393,
+                  1.4613888263702393,
+                  3.266220808029175,
+                  3.266220808029175,
+                  0.8271648287773132,
+                  2.488633871078491,
+                  0.8141482472419739,
+                  0.026526598259806633,
+                  1.804832935333252,
+                  1.804832935333252,
+                  -0.7283573150634766,
+                  -1.1241785287857056,
+                  -0.30379265546798706,
+                  -0.30379265546798706,
+                  -0.46848514676094055,
+                  -0.30379265546798706,
+                  -0.32420405745506287,
+                  -0.32420405745506287,
+                  -0.32420405745506287,
+                  -0.32420405745506287,
+                  -0.32420405745506287,
+                  -2.427543878555298,
+                  -0.09304428100585938,
+                  0,
+                  0,
+                  -0.018165308982133865,
+                  -0.040814224630594254,
+                  -0.016333971172571182,
+                  -0.02357734926044941,
+                  -0.012866690688330034
+                ],
+                [
+                  -0.04735463112592697,
+                  -0.04735463112592697,
+                  -0.04735463112592697,
+                  -0.04735463112592697,
+                  -0.28702643513679504,
+                  -0.28702643513679504,
+                  -1.7015165090560913,
+                  1.5872784852981567,
+                  -0.24071158468723297,
+                  0.9268198013305664,
+                  -0.21532343327999115,
+                  -0.21532343327999115,
+                  1.199169397354126,
+                  0.6112020611763,
+                  2.49233078956604,
+                  2.49233078956604,
+                  2.453704357147217,
+                  2.49233078956604,
+                  -0.5269098877906799,
+                  -0.5269098877906799,
+                  -0.5269098877906799,
+                  -0.5269098877906799,
+                  -0.5269098877906799,
+                  -1.3817553520202637,
+                  -0.02606639266014099,
+                  -0.007383950520306826,
+                  -0.007383950520306826,
+                  -0.03156157210469246,
+                  -0.06890092045068741,
+                  -0.028291910886764526,
+                  -0.05244448035955429,
+                  0.030547751419184505
+                ],
+                [
+                  -0.1992303431034088,
+                  -0.1992303431034088,
+                  -0.19575589895248413,
+                  -0.19575589895248413,
+                  -0.30861636996269226,
+                  -0.30861636996269226,
+                  -0.6908025741577148,
+                  1.3514124155044556,
+                  -0.07366497069597244,
+                  -0.9319288730621338,
+                  -0.07366497069597244,
+                  -0.07366497069597244,
+                  -0.8201003670692444,
+                  1.3939045667648315,
+                  -0.5070691704750061,
+                  -0.5070691704750061,
+                  -0.5184592008590698,
+                  -0.5070691704750061,
+                  2.260526180267334,
+                  2.260526180267334,
+                  2.260526180267334,
+                  2.260526180267334,
+                  2.260526180267334,
+                  -0.35347217321395874,
+                  -0.0059657772071659565,
+                  0,
+                  0,
+                  -0.12442582845687866,
+                  -0.25511083006858826,
+                  -0.1115911528468132,
+                  -0.23775942623615265,
+                  0.2377651922706823
+                ],
+                [
+                  -6.795727729797363,
+                  -6.795727729797363,
+                  -0.00962209701538086,
+                  -0.00962209701538086,
+                  -0.10969752073287964,
+                  -0.10969752073287964,
+                  6.124643802642822,
+                  -1.777750015258789,
+                  -8.397621154785156,
+                  -5.2338080406188965,
+                  -0.09285885095596313,
+                  -0.09285885095596313,
+                  3.166726589202881,
+                  2.6705284118652344,
+                  -1.0623773336410522,
+                  -1.0623773336410522,
+                  -7.350594520568848,
+                  -1.0623773336410522,
+                  -0.4933463931083679,
+                  -0.4933463931083679,
+                  -0.4933463931083679,
+                  -0.4933463931083679,
+                  -0.4933463931083679,
+                  6.269935607910156,
+                  -6.211533546447754,
+                  -0.28643327951431274,
+                  -0.28643327951431274,
+                  -0.41068485379219055,
+                  -0.8197927474975586,
+                  -0.40810057520866394,
+                  -1.186112403869629,
+                  1.2359845353555579
+                ],
+                [
+                  6.837467193603516,
+                  6.837467193603516,
+                  -1.4645555019378662,
+                  -1.4645555019378662,
+                  -2.9447357654571533,
+                  -2.9447357654571533,
+                  -0.6786307096481323,
+                  -3.1366372108459473,
+                  8.799132347106934,
+                  4.902156829833984,
+                  -1.4788810014724731,
+                  -1.4788810014724731,
+                  -3.8802735805511475,
+                  -3.8802735805511475,
+                  -0.09595092386007309,
+                  -0.09595092386007309,
+                  6.696960926055908,
+                  -0.09595092386007309,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  2.267145872116089,
+                  6.888862609863281,
+                  0.08825458586215973,
+                  0.08825458586215973,
+                  -0.30531367659568787,
+                  -0.636537492275238,
+                  -0.27330920100212097,
+                  -0.4993077516555786,
+                  -1.0238729499003831
+                ],
+                [
+                  -0.46154868602752686,
+                  -0.46154868602752686,
+                  -0.1760234832763672,
+                  -0.1760234832763672,
+                  -0.3454318642616272,
+                  -0.3454318642616272,
+                  -2.905345916748047,
+                  -1.3394997119903564,
+                  -0.31129738688468933,
+                  -0.7790454030036926,
+                  -0.11770312488079071,
+                  -0.11770312488079071,
+                  -0.46328046917915344,
+                  -1.0690370798110962,
+                  -0.3599517047405243,
+                  -0.3599517047405243,
+                  -0.7066010236740112,
+                  -0.3599517047405243,
+                  -0.6057520508766174,
+                  -0.6057520508766174,
+                  -0.6057520508766174,
+                  -0.6057520508766174,
+                  -0.6057520508766174,
+                  -2.531554698944092,
+                  -0.3386574685573578,
+                  -0.044765133410692215,
+                  -0.044765133410692215,
+                  2.9489660263061523,
+                  5.899059295654297,
+                  2.9501030445098877,
+                  8.846613883972168,
+                  5.43735710260067
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "en": {
+        "settings": {
+          "locale": "en",
+          "trainByDomain": false,
+          "tag": "domain-manager-en",
+          "nluByDomain": {
+            "default": {
+              "className": "NeuralNlu",
+              "settings": {}
+            }
+          },
+          "useStemDict": true
+        },
+        "stemDict": {
+          "analyz,financi,how,statement,to": {
+            "intent": "financial.analysis",
+            "domain": "default"
+          },
+          "cash,flow,is,statement,what": {
+            "intent": "cashflow.explanation",
+            "domain": "default"
+          },
+          "explain,incom,statement": {
+            "intent": "income.statement",
+            "domain": "default"
+          },
+          "hello": {
+            "intent": "greeting",
+            "domain": "default"
+          },
+          "hi": {
+            "intent": "greeting",
+            "domain": "default"
+          }
+        },
+        "intentDict": {
+          "financial.analysis": "default",
+          "cashflow.explanation": "default",
+          "income.statement": "default",
+          "greeting": "default"
+        },
+        "sentences": [
+          {
+            "domain": "default",
+            "utterance": "how to analyze financial statements?",
+            "intent": "financial.analysis"
+          },
+          {
+            "domain": "default",
+            "utterance": "what is cash flow statement?",
+            "intent": "cashflow.explanation"
+          },
+          {
+            "domain": "default",
+            "utterance": "explain income statement",
+            "intent": "income.statement"
+          },
+          {
+            "domain": "default",
+            "utterance": "hello",
+            "intent": "greeting"
+          },
+          {
+            "domain": "default",
+            "utterance": "hi",
+            "intent": "greeting"
+          }
+        ],
+        "domains": {
+          "master_domain": {
+            "settings": {
+              "locale": "en",
+              "tag": "nlu-en",
+              "keepStopwords": true,
+              "nonefeatureValue": 1,
+              "nonedeltaMultiplier": 1.2,
+              "spellCheck": false,
+              "spellCheckDistance": 1,
+              "filterZeros": true,
+              "log": true
+            },
+            "features": {
+              "how": 1,
+              "to": 1,
+              "analyz": 1,
+              "financi": 1,
+              "statement": 1,
+              "what": 1,
+              "is": 1,
+              "cash": 1,
+              "flow": 1,
+              "explain": 1,
+              "incom": 1,
+              "hello": 1,
+              "hi": 1
+            },
+            "intents": {
+              "financial.analysis": 1,
+              "cashflow.explanation": 1,
+              "income.statement": 1,
+              "greeting": 1
+            },
+            "intentFeatures": {
+              "financial.analysis": {
+                "how": 1,
+                "to": 1,
+                "analyz": 1,
+                "financi": 1,
+                "statement": 1
+              },
+              "cashflow.explanation": {
+                "what": 1,
+                "is": 1,
+                "cash": 1,
+                "flow": 1,
+                "statement": 1
+              },
+              "income.statement": {
+                "explain": 1,
+                "incom": 1,
+                "statement": 1
+              },
+              "greeting": {
+                "hello": 1,
+                "hi": 1
+              }
+            },
+            "featuresToIntent": {
+              "how": [
+                "financial.analysis"
+              ],
+              "to": [
+                "financial.analysis"
+              ],
+              "analyz": [
+                "financial.analysis"
+              ],
+              "financi": [
+                "financial.analysis"
+              ],
+              "statement": [
+                "financial.analysis",
+                "cashflow.explanation",
+                "income.statement"
+              ],
+              "what": [
+                "cashflow.explanation"
+              ],
+              "is": [
+                "cashflow.explanation"
+              ],
+              "cash": [
+                "cashflow.explanation"
+              ],
+              "flow": [
+                "cashflow.explanation"
+              ],
+              "explain": [
+                "income.statement"
+              ],
+              "incom": [
+                "income.statement"
+              ],
+              "hello": [
+                "greeting"
+              ],
+              "hi": [
+                "greeting"
+              ]
+            },
+            "neuralNetwork": {
+              "settings": {
+                "locale": "en",
+                "tag": "nlu-en",
+                "keepStopwords": true,
+                "nonefeatureValue": 1,
+                "nonedeltaMultiplier": 1.2,
+                "spellCheck": false,
+                "spellCheckDistance": 1,
+                "filterZeros": true,
+                "log": true
+              },
+              "features": [
+                "how",
+                "to",
+                "analyz",
+                "financi",
+                "statement",
+                "what",
+                "is",
+                "cash",
+                "flow",
+                "explain",
+                "incom",
+                "hello",
+                "hi"
+              ],
+              "intents": [
+                "financial.analysis",
+                "cashflow.explanation",
+                "income.statement",
+                "greeting"
+              ],
+              "perceptrons": [
+                [
+                  3.1131553649902344,
+                  3.1131553649902344,
+                  3.1131553649902344,
+                  3.1131553649902344,
+                  1.4645230770111084,
+                  -0.6042417287826538,
+                  -0.6042417287826538,
+                  -0.6042417287826538,
+                  -0.6042417287826538,
+                  -0.9688013195991516,
+                  -0.9688013195991516,
+                  -0.3648681640625,
+                  -0.36131319403648376,
+                  0.3685700743353497
+                ],
+                [
+                  -0.5801316499710083,
+                  -0.5801316499710083,
+                  -0.5801316499710083,
+                  -0.5801316499710083,
+                  1.4824163913726807,
+                  3.107790946960449,
+                  3.107790946960449,
+                  3.107790946960449,
+                  3.107790946960449,
+                  -0.9749472737312317,
+                  -0.9749472737312317,
+                  -0.37001994252204895,
+                  -0.3665880560874939,
+                  0.3724510778090701
+                ],
+                [
+                  -0.9954853653907776,
+                  -0.9954853653907776,
+                  -0.9954853653907776,
+                  -0.9954853653907776,
+                  3.1544106006622314,
+                  -0.9970610737800598,
+                  -0.9970610737800598,
+                  -0.9970610737800598,
+                  -0.9970610737800598,
+                  5.155901908874512,
+                  5.155901908874512,
+                  -0.7728837728500366,
+                  -0.7631396651268005,
+                  0.8053909390900728
+                ],
+                [
+                  -0.7859781384468079,
+                  -0.7859781384468079,
+                  -0.7859781384468079,
+                  -0.7859781384468079,
+                  -3.1017119884490967,
+                  -0.7842128276824951,
+                  -0.7842128276824951,
+                  -0.7842128276824951,
+                  -0.7842128276824951,
+                  -1.5221991539001465,
+                  -1.5221991539001465,
+                  7.749053955078125,
+                  7.814702987670898,
+                  6.257610017621357
+                ]
+              ]
+            }
+          }
+        }
+      }
+    },
+    "intentDomains": {},
+    "extraSentences": [
+      [
+        "zh",
+        "如何分析财务报表？"
+      ],
+      [
+        "zh",
+        "财务报表怎么看？"
+      ],
+      [
+        "zh",
+        "什么是现金流量表？"
+      ],
+      [
+        "zh",
+        "解释一下利润表"
+      ],
+      [
+        "zh",
+        "报销"
+      ],
+      [
+        "zh",
+        "报销是什么？"
+      ],
+      [
+        "zh",
+        "报销是什么"
+      ],
+      [
+        "zh",
+        "报销流程"
+      ],
+      [
+        "zh",
+        "怎么报销？"
+      ],
+      [
+        "zh",
+        "怎么报销"
+      ],
+      [
+        "zh",
+        "如何报销？"
+      ],
+      [
+        "zh",
+        "如何报销"
+      ],
+      [
+        "zh",
+        "报销的基本流程"
+      ],
+      [
+        "zh",
+        "你好"
+      ],
+      [
+        "zh",
+        "您好"
+      ],
+      [
+        "zh",
+        "嗨"
+      ],
+      [
+        "en",
+        "how to analyze financial statements?"
+      ],
+      [
+        "en",
+        "what is cash flow statement?"
+      ],
+      [
+        "en",
+        "explain income statement"
+      ],
+      [
+        "en",
+        "hello"
+      ],
+      [
+        "en",
+        "hi"
+      ]
+    ]
+  },
+  "ner": {
+    "settings": {
+      "tag": "ner",
+      "entityPreffix": "%",
+      "entitySuffix": "%"
+    },
+    "rules": {
+      "zh": {
+        "financial_term": {
+          "name": "financial_term",
+          "type": "enum",
+          "rules": [
+            {
+              "option": "财务报表",
+              "texts": [
+                "财务报表",
+                "财务报告",
+                "损益表",
+                "资产负债表"
+              ]
+            },
+            {
+              "option": "现金流量",
+              "texts": [
+                "现金流量",
+                "现金流",
+                "现金流动"
+              ]
+            },
+            {
+              "option": "利润",
+              "texts": [
+                "利润",
+                "净利润",
+                "毛利润",
+                "营业利润"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "nlgManager": {
+    "settings": {
+      "tag": "nlg-manager"
+    },
+    "responses": {
+      "zh": {
+        "financial.analysis": [
+          {
+            "answer": "财务报表分析主要包括：1. 资产负债表分析（偿债能力）2. 利润表分析（盈利能力）3. 现金流量表分析（现金状况）。建议关注财务比率和趋势分析。"
+          }
+        ],
+        "cashflow.explanation": [
+          {
+            "answer": "现金流量表反映企业在一定期间内现金流入和流出的情况，分为经营活动、投资活动和筹资活动三个部分。"
+          }
+        ],
+        "income.statement": [
+          {
+            "answer": "利润表（损益表）显示企业在一定期间内的收入、成本和利润情况，包括营业收入、营业成本、营业利润、净利润等指标。"
+          }
+        ],
+        "reimbursement.definition": [
+          {
+            "answer": "报销是指员工因公发生的合理费用，按照公司规定向企业申请补偿的过程。报销需要提供原始发票、费用明细等证明材料。"
+          }
+        ],
+        "reimbursement.process": [
+          {
+            "answer": "报销基本流程：1. 准备材料（发票、收据等）2. 填写报销单3. 部门主管审批4. 财务部门审核5. 财务处理打款。一般3-7个工作日内完成。"
+          }
+        ],
+        "greeting": [
+          {
+            "answer": "您好！我是财务文档助手，可以帮您分析财务报表和回答财务相关问题。请上传文档或直接提问。"
+          }
+        ]
+      },
+      "en": {
+        "financial.analysis": [
+          {
+            "answer": "Financial statement analysis includes: 1. Balance sheet analysis (liquidity) 2. Income statement analysis (profitability) 3. Cash flow statement analysis (cash position). Focus on financial ratios and trend analysis."
+          }
+        ],
+        "cashflow.explanation": [
+          {
+            "answer": "The cash flow statement shows the inflow and outflow of cash during a period, divided into operating, investing, and financing activities."
+          }
+        ],
+        "income.statement": [
+          {
+            "answer": "The income statement shows a company's revenues, costs, and profits over a period, including revenue, cost of goods sold, operating profit, net income, etc."
+          }
+        ],
+        "greeting": [
+          {
+            "answer": "Hello! I am a financial document assistant. I can help you analyze financial statements and answer financial questions. Please upload documents or ask questions directly."
+          }
+        ]
+      }
+    }
+  },
+  "actionManager": {
+    "settings": {
+      "tag": "action-manager"
+    },
+    "actions": {}
+  },
+  "slotManager": {}
+}
