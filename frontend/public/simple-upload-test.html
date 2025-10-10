@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Upload Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        pre { background-color: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simple Upload Test</h1>
+        
+        <div class="section">
+            <h3>1. 测试后端服务器连接</h3>
+            <button onclick="testConnection()">测试连接</button>
+            <div id="connection-result"></div>
+        </div>
+
+        <div class="section">
+            <h3>2. 测试文件上传</h3>
+            <input type="file" id="file-input" accept=".pdf,.docx,.doc,.txt">
+            <button onclick="testSimpleUpload()">测试上传</button>
+            <div id="upload-result"></div>
+        </div>
+
+        <div class="section">
+            <h3>3. 检查浏览器控制台错误</h3>
+            <button onclick="checkConsole()">检查控制台</button>
+            <div id="console-result"></div>
+        </div>
+    </div>
+
+    <script>
+        async function testConnection() {
+            const resultDiv = document.getElementById('connection-result');
+            resultDiv.innerHTML = '<p>正在测试连接...</p>';
+            
+            try {
+                const response = await fetch('http://localhost:3001/health');
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h4>连接成功</h4>
+                            <p>状态码: ${response.status}</p>
+                            <p>响应: ${JSON.stringify(data, null, 2)}</p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h4>连接失败</h4>
+                            <p>状态码: ${response.status}</p>
+                            <p>错误: ${await response.text()}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>连接错误</h4>
+                        <p>错误类型: ${error.name}</p>
+                        <p>错误消息: ${error.message}</p>
+                        <pre>${error.stack}</pre>
+                    </div>
+                `;
+            }
+        }
+
+        async function testSimpleUpload() {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('请先选择一个文件');
+                return;
+            }
+
+            const resultDiv = document.getElementById('upload-result');
+            resultDiv.innerHTML = '<p>正在上传文件...</p>';
+            
+            const formData = new FormData();
+            formData.append('document', file);
+            formData.append('title', 'Simple Test Upload');
+            formData.append('description', 'Test upload from simple test page');
+            formData.append('userId', '1');
+
+            try {
+                const response = await fetch('http://localhost:3001/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h4>上传成功</h4>
+                            <p>状态码: ${response.status}</p>
+                            <p>响应: ${JSON.stringify(data, null, 2)}</p>
+                        </div>
+                    `;
+                } else {
+                    const errorText = await response.text();
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h4>上传失败</h4>
+                            <p>状态码: ${response.status}</p>
+                            <p>错误响应: ${errorText}</p>
+                            <p>响应头: ${JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2)}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>网络错误</h4>
+                        <p>错误类型: ${error.name}</p>
+                        <p>错误消息: ${error.message}</p>
+                        <pre>${error.stack}</pre>
+                    </div>
+                `;
+            }
+        }
+
+        function checkConsole() {
+            const resultDiv = document.getElementById('console-result');
+            resultDiv.innerHTML = `
+                <div class="success">
+                    <h4>控制台检查</h4>
+                    <p>请打开浏览器开发者工具（F12）查看控制台是否有错误信息。</p>
+                    <p>常见的错误类型：</p>
+                    <ul>
+                        <li>CORS错误：Access-Control-Allow-Origin相关</li>
+                        <li>网络错误：net::ERR_FAILED等</li>
+                        <li>JavaScript运行时错误</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        // 页面加载时自动测试连接
+        window.addEventListener('load', () => {
+            testConnection();
+        });
+    </script>
+</body>
+</html>

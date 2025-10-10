@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .result { margin-top: 20px; padding: 10px; border: 1px solid #ccc; white-space: pre-wrap; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+    </style>
+</head>
+<body>
+    <h1>Upload API Debug Test</h1>
+    <button onclick="testUpload()">Test Upload</button>
+    <button onclick="testCORS()">Test CORS</button>
+    <div id="result"></div>
+
+    <script>
+        async function testUpload() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<div class="info">Testing upload... Please check browser console for detailed logs.</div>';
+            
+            try {
+                // Create a simple text file for testing
+                const blob = new Blob(['Test document content'], { type: 'text/plain' });
+                const file = new File([blob], 'test.txt', { type: 'text/plain' });
+                
+                const formData = new FormData();
+                formData.append('document', file);
+                formData.append('title', 'Test Upload');
+                formData.append('description', 'Test from browser');
+                formData.append('userId', '1');
+                
+                console.log('Starting upload request...');
+                console.log('URL: http://localhost:3001/api/upload');
+                console.log('FormData entries:');
+                for (let pair of formData.entries()) {
+                    console.log(pair[0] + ': ' + (pair[1] instanceof File ? pair[1].name : pair[1]));
+                }
+                
+                const response = await fetch('http://localhost:3001/api/upload', {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'cors',
+                    credentials: 'include'
+                });
+                
+                console.log('Response received:');
+                console.log('Status:', response.status);
+                console.log('Status Text:', response.statusText);
+                console.log('Headers:');
+                for (let [key, value] of response.headers.entries()) {
+                    console.log(`  ${key}: ${value}`);
+                }
+                
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                resultDiv.innerHTML = `
+                    <div class="result success">
+                        <strong>✅ Upload Successful!</strong><br>
+                        Status: ${response.status} ${response.statusText}<br>
+                        Message: ${data.message}<br>
+                        Document ID: ${data.document?.id}
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Upload error:', error);
+                
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <strong>❌ Upload Failed!</strong><br>
+                        Error: ${error.name}<br>
+                        Message: ${error.message}<br>
+                        ${error.stack ? 'Stack: ' + error.stack : ''}
+                    </div>
+                `;
+            }
+        }
+        
+        async function testCORS() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<div class="info">Testing CORS preflight... Please check browser console.</div>';
+            
+            try {
+                console.log('Testing CORS preflight request...');
+                
+                const response = await fetch('http://localhost:3001/api/upload', {
+                    method: 'OPTIONS',
+                    mode: 'cors',
+                    credentials: 'include'
+                });
+                
+                console.log('CORS preflight response:');
+                console.log('Status:', response.status);
+                console.log('Status Text:', response.statusText);
+                console.log('Headers:');
+                for (let [key, value] of response.headers.entries()) {
+                    console.log(`  ${key}: ${value}`);
+                }
+                
+                resultDiv.innerHTML = `
+                    <div class="result success">
+                        <strong>✅ CORS Preflight Successful!</strong><br>
+                        Status: ${response.status} ${response.statusText}<br>
+                        Access-Control-Allow-Origin: ${response.headers.get('Access-Control-Allow-Origin') || 'Not set'}<br>
+                        Access-Control-Allow-Methods: ${response.headers.get('Access-Control-Allow-Methods') || 'Not set'}<br>
+                        Access-Control-Allow-Headers: ${response.headers.get('Access-Control-Allow-Headers') || 'Not set'}
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('CORS test error:', error);
+                
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <strong>❌ CORS Preflight Failed!</strong><br>
+                        Error: ${error.name}<br>
+                        Message: ${error.message}
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

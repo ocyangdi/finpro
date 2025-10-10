@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA页面调试</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { background: #d4edda; }
+        .error { background: #f8d7da; }
+    </style>
+</head>
+<body>
+    <h1>QA页面调试工具</h1>
+    
+    <div class="test" id="apiTest">
+        <h3>API连接测试</h3>
+        <button onclick="testAPI()">测试API连接</button>
+        <div id="apiResult"></div>
+    </div>
+
+    <div class="test" id="contentTest">
+        <h3>页面内容检查</h3>
+        <button onclick="checkContent()">检查页面元素</button>
+        <div id="contentResult"></div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            try {
+                const response = await fetch('/api/qa/capabilities');
+                const data = await response.json();
+                document.getElementById('apiResult').innerHTML = 
+                    `<div class="success">API连接成功: ${JSON.stringify(data)}</div>`;
+            } catch (error) {
+                document.getElementById('apiResult').innerHTML = 
+                    `<div class="error">API连接失败: ${error.message}</div>`;
+            }
+        }
+
+        function checkContent() {
+            // 检查常见QA页面元素
+            const elements = {
+                '聊天容器': document.querySelector('.chat-container, [class*="chat"], [class*="message"]'),
+                '输入框': document.querySelector('input, textarea'),
+                '发送按钮': document.querySelector('button'),
+                '文档列表': document.querySelector('[class*="doc"], [class*="sidebar"]'),
+                'AI回复': document.querySelector('[class*="ai"], [class*="assistant"], [class*="bot"]')
+            };
+            
+            let result = '<div class="success"><h4>找到的元素:</h4><ul>';
+            let found = false;
+            
+            for (const [name, element] of Object.entries(elements)) {
+                if (element) {
+                    result += `<li>${name}: 找到 (${element.className || element.tagName})</li>`;
+                    found = true;
+                } else {
+                    result += `<li>${name}: 未找到</li>`;
+                }
+            }
+            
+            result += '</ul></div>';
+            
+            if (!found) {
+                result = '<div class="error">未找到任何QA页面元素，可能页面未正确加载</div>';
+            }
+            
+            document.getElementById('contentResult').innerHTML = result;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Debug - Detailed Error Capture</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        pre { background-color: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+        .log-entry { margin: 5px 0; padding: 5px; border-left: 3px solid #007bff; }
+        .error-log { border-left-color: #dc3545; }
+        .success-log { border-left-color: #28a745; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Debug - Detailed Error Capture</h1>
+        
+        <div class="section info">
+            <h3>测试说明</h3>
+            <p>这个页面会详细捕获上传过程中的所有错误信息，包括网络请求、响应状态、错误堆栈等。</p>
+        </div>
+
+        <div class="section">
+            <h3>1. 测试CORS预检请求</h3>
+            <button onclick="testCORS()">测试CORS预检</button>
+            <div id="cors-result"></div>
+        </div>
+
+        <div class="section">
+            <h3>2. 测试实际文件上传</h3>
+            <input type="file" id="file-input" accept=".pdf,.docx,.doc,.txt">
+            <button onclick="testUpload()">测试上传</button>
+            <div id="upload-result"></div>
+        </div>
+
+        <div class="section">
+            <h3>3. 使用fetch API测试上传</h3>
+            <button onclick="testFetchUpload()">使用fetch测试上传</button>
+            <div id="fetch-result"></div>
+        </div>
+
+        <div class="section">
+            <h3>4. 使用XMLHttpRequest测试上传</h3>
+            <button onclick="testXHRUpload()">使用XHR测试上传</button>
+            <div id="xhr-result"></div>
+        </div>
+
+        <div class="section">
+            <h3>详细日志</h3>
+            <div id="logs"></div>
+        </div>
+    </div>
+
+    <script>
+        const logs = [];
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type === 'error' ? 'error-log' : type === 'success' ? 'success-log' : ''}`;
+            logEntry.innerHTML = `<strong>[${timestamp}]</strong> ${message}`;
+            document.getElementById('logs').appendChild(logEntry);
+            logs.push({timestamp, message, type});
+            console.log(`[${timestamp}] ${message}`);
+        }
+
+        async function testCORS() {
+            log('开始测试CORS预检请求...');
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/upload', {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Origin': 'http://localhost:3000',
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'Content-Type'
+                    }
+                });
+                
+                const resultDiv = document.getElementById('cors-result');
+                resultDiv.innerHTML = `
+                    <div class="success">
+                        <h4>CORS预检请求成功</h4>
+                        <p>状态码: ${response.status}</p>
+                        <p>Access-Control-Allow-Origin: ${response.headers.get('Access-Control-Allow-Origin')}</p>
+                        <p>Access-Control-Allow-Methods: ${response.headers.get('Access-Control-Allow-Methods')}</p>
+                        <p>Access-Control-Allow-Headers: ${response.headers.get('Access-Control-Allow-Headers')}</p>
+                    </div>
+                `;
+                log('CORS预检请求成功', 'success');
+            } catch (error) {
+                const resultDiv = document.getElementById('cors-result');
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>CORS预检请求失败</h4>
+                        <p>错误: ${error.message}</p>
+                        <pre>${error.stack}</pre>
+                    </div>
+                `;
+                log(`CORS预检请求失败: ${error.message}`, 'error');
+            }
+        }
+
+        async function testUpload() {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('请先选择一个文件');
+                return;
+            }
+
+            log(`开始上传文件: ${file.name} (${file.size} bytes)`);
+            
+            const formData = new FormData();
+            formData.append('document', file);
+            formData.append('title', 'Test Upload');
+            formData.append('description', 'Test upload from debug page');
+            formData.append('userId', '1');
+
+            try {
+                const response = await fetch('http://localhost:3001/api/upload', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+                
+                const resultDiv = document.getElementById('upload-result');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h4>上传成功</h4>
+                            <p>状态码: ${response.status}</p>
+                            <p>响应: ${JSON.stringify(data, null, 2)}</p>
+                        </div>
+                    `;
+                    log(`上传成功 - 状态码: ${response.status}`, 'success');
+                } else {
+                    const errorText = await response.text();
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h4>上传失败</h4>
+                            <p>状态码: ${response.status}</p>
+                            <p>错误响应: ${errorText}</p>
+                            <p>响应头: ${JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2)}</p>
+                        </div>
+                    `;
+                    log(`上传失败 - 状态码: ${response.status}, 错误: ${errorText}`, 'error');
+                }
+            } catch (error) {
+                const resultDiv = document.getElementById('upload-result');
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>网络错误</h4>
+                        <p>错误类型: ${error.name}</p>
+                        <p>错误消息: ${error.message}</p>
+                        <pre>${error.stack}</pre>
+                    </div>
+                `;
+                log(`网络错误: ${error.message}`, 'error');
+            }
+        }
+
+        async function testFetchUpload() {
+            log('使用fetch API测试上传...');
+            
+            // 创建一个简单的文本文件用于测试
+            const blob = new Blob(['Test file content'], { type: 'text/plain' });
+            const file = new File([blob], 'test.txt', { type: 'text/plain' });
+            
+            const formData = new FormData();
+            formData.append('document', file);
+            formData.append('title', 'Fetch Test Upload');
+            formData.append('description', 'Test upload using fetch API');
+            formData.append('userId', '1');
+
+            try {
+                const response = await fetch('http://localhost:3001/api/upload', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                const resultDiv = document.getElementById('fetch-result');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h4>Fetch上传成功</h4>
+                            <p>状态码: ${response.status}</p>
+                            <p>响应: ${JSON.stringify(data, null, 2)}</p>
+                        </div>
+                    `;
+                    log(`Fetch上传成功 - 状态码: ${response.status}`, 'success');
+                } else {
+                    const errorText = await response.text();
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h4>Fetch上传失败</h4>
+                            <p>状态码: ${response.status}</p>
+                            <p>错误响应: ${errorText}</p>
+                        </div>
+                    `;
+                    log(`Fetch上传失败 - 状态码: ${response.status}, 错误: ${errorText}`, 'error');
+                }
+            } catch (error) {
+                const resultDiv = document.getElementById('fetch-result');
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>Fetch网络错误</h4>
+                        <p>错误: ${error.message}</p>
+                        <pre>${error.stack}</pre>
+                    </div>
+                `;
+                log(`Fetch网络错误: ${error.message}`, 'error');
+            }
+        }
+
+        function testXHRUpload() {
+            log('使用XMLHttpRequest测试上传...');
+            
+            const blob = new Blob(['XHR Test file content'], { type: 'text/plain' });
+            const file = new File([blob], 'xhr-test.txt', { type: 'text/plain' });
+            
+            const formData = new FormData();
+            formData.append('document', file);
+            formData.append('title', 'XHR Test Upload');
+            formData.append('description', 'Test upload using XMLHttpRequest');
+            formData.append('userId', '1');
+
+            const xhr = new XMLHttpRequest();
+            const resultDiv = document.getElementById('xhr-result');
+            
+            xhr.open('POST', 'http://localhost:3001/api/upload', true);
+            xhr.withCredentials = true;
+            
+            xhr.onload = function() {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    try {
+                        const data = JSON.parse(xhr.responseText);
+                        resultDiv.innerHTML = `
+                            <div class="success">
+                                <h4>XHR上传成功</h4>
+                                <p>状态码: ${xhr.status}</p>
+                                <p>响应: ${JSON.stringify(data, null, 2)}</p>
+                            </div>
+                        `;
+                        log(`XHR上传成功 - 状态码: ${xhr.status}`, 'success');
+                    } catch (e) {
+                        resultDiv.innerHTML = `
+                            <div class="error">
+                                <h4>XHR响应解析错误</h4>
+                                <p>状态码: ${xhr.status}</p>
+                                <p>响应文本: ${xhr.responseText}</p>
+                                <p>解析错误: ${e.message}</p>
+                            </div>
+                        `;
+                        log(`XHR响应解析错误: ${e.message}`, 'error');
+                    }
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h4>XHR上传失败</h4>
+                            <p>状态码: ${xhr.status}</p>
+                            <p>响应文本: ${xhr.responseText}</p>
+                        </div>
+                    `;
+                    log(`XHR上传失败 - 状态码: ${xhr.status}`, 'error');
+                }
+            };
+            
+            xhr.onerror = function() {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>XHR网络错误</h4>
+                        <p>无法连接到服务器</p>
+                    </div>
+                `;
+                log('XHR网络错误: 无法连接到服务器', 'error');
+            };
+            
+            xhr.ontimeout = function() {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>XHR请求超时</h4>
+                        <p>请求超时</p>
+                    </div>
+                `;
+                log('XHR请求超时', 'error');
+            };
+            
+            xhr.send(formData);
+        }
+
+        // 页面加载时自动测试CORS
+        window.addEventListener('load', () => {
+            log('页面加载完成，开始自动测试...');
+            testCORS();
+        });
+    </script>
+</body>
+</html>
